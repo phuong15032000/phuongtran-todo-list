@@ -33,7 +33,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
       - run: sudo apt-get update
-      - run: sudo apt-get install gradle-7.0.2
+      - run: sudo apt-get install gradle-7.1.1
       - run: gradle dependencies
 
       - save_cache:
