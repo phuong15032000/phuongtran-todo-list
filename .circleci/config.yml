@@ -44,12 +44,12 @@ jobs:
       # run tests!
       - run:
           name: Running test
-          command: gradle test
+          command: ./gradlew test
 
       # Upload test coverage
       - run:
           name: Generate test coverage
-          command: gradle jacocoTestReport
+          command: ./gradlew jacocoTestReport
 
       # Upload test coverage
       - run:
