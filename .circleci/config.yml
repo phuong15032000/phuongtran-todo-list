@@ -32,9 +32,9 @@ jobs:
             - v1-dependencies-{{ checksum "build.gradle" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-      - run: sudo apt-get update
-      - run: sudo apt upgrade gradle
-      - run: gradle dependencies
+      - run: ./gradlew wrapper --gradle-version=7.1.1 --distribution-type=bin
+      - run: ./gradlew tasks
+      - run: ./gradlew dependencies
 
       - save_cache:
           paths:
