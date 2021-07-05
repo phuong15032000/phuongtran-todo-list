@@ -1,9 +1,8 @@
 package com.trandiepphuong.controllers;
 
 import com.trandiepphuong.models.Task;
-import com.trandiepphuong.repositories.TaskRepository;
 import com.trandiepphuong.services.TaskService;
-import org.apache.logging.log4j.message.Message;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,14 +23,8 @@ public class TaskController {
     public ResponseEntity<List<Task>> getAll() {
         System.out.println("get all");
         List<Task> tasks = taskService.findAll();
-        try {
-            if (tasks.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(tasks, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
+
     }
 
     @GetMapping("/search")
@@ -48,36 +41,25 @@ public class TaskController {
         if (!todoData.isEmpty()) {
             return new ResponseEntity<>(todoData, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping()
     ResponseEntity<Task> post(@RequestBody Task task) {
-        try {
-            if (task.getContent().equals("")){
-                return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-            Task _task = taskService.save(task);
-            return new ResponseEntity<>(_task, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        Task _task = taskService.save(task);
+        return new ResponseEntity<>(_task, HttpStatus.CREATED);
     }
 
+
     @DeleteMapping("/{id}")
-    ResponseEntity<HttpStatus> delete(@PathVariable int id) {
-        try {
-            taskService.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    ResponseEntity<Task> delete(@PathVariable int id) {
+        return new ResponseEntity<>(taskService.deleteById(id), HttpStatus.OK);
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> put(@RequestBody Task task, @PathVariable int id) {
+    public ResponseEntity<Task> put(@PathVariable int id, @RequestBody Task task) throws NotFoundException {
         Optional<Task> todoData = taskService.findById(id);
         if (todoData.isPresent()) {
             Task _task = todoData.get();
