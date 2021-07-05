@@ -125,7 +125,7 @@ public class TaskControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(json)).
-                andExpect(status().isNotFound()).
+                andExpect(status().isOk()).
                 andDo(MockMvcResultHandlers.print());
     }
 
