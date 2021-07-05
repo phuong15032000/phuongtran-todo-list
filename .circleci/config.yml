@@ -10,6 +10,7 @@ jobs:
       - image: circleci/openjdk:11-jdk
       - image: mysql:5.7
         environment:
+          - MYSQL_ROOT_PASSWORD=admin
           - MYSQL_PASSWORD=admin
           - MYSQL_DATABASE=todolist
           - MYSQL_ROOT_HOST=%
