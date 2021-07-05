@@ -8,7 +8,15 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/openjdk:11-jdk
-
+      - image: circleci/mysql:8.0.4
+        auth:
+          username: spring
+          password: spring123  # context / project UI env-var reference
+        environment:
+          MYSQL_ROOT_PASSWORD: admin
+          MYSQL_DATABASE: todolist
+          MYSQL_USER: spring
+          MYSQL_PASSWORD: spring123
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
