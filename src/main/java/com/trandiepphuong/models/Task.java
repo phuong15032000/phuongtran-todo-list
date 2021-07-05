@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-public class Todo {
+public class Task {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -14,4 +14,7 @@ public class Todo {
 
     @Column(name = "content")
     private String content;
+
+    @Column(name = "status")
+    private String status;
 }
