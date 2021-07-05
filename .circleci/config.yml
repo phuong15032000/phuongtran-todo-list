@@ -8,12 +8,6 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/openjdk:11-jdk
-      environment:
-        - MYSQL_PASSWORD='admin'
-        - MYSQL_DATABASE='todolist'
-        - MYSQL_ROOT_HOST=%
-        - DB_HOST=127.0.0.1
-        - DB_PORT=3306
       - image: mysql:5.7
       environment:
         - MYSQL_PASSWORD=admin
