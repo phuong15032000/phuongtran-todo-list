@@ -16,4 +16,6 @@ public interface TaskService {
     Optional<Task> findById(int id);
 
     Task deleteById(int id);
+
+    Task update(int id, Task task) throws NotFoundException;
 }

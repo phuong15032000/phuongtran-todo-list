@@ -117,10 +117,8 @@ public class TaskControllerTest {
     public void updateTask() throws Exception {
         task.setContent("Eat dinner");
 
-        when(taskService.save(any())).thenReturn(task);
-
+        when(taskService.update(task.getId(),task)).thenReturn(task);
         String json = asJsonString(task);
-
         mockMvc.perform(MockMvcRequestBuilders.put("/api/tasks/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)

@@ -11,32 +11,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "localhost:3000", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskController {
 
     @Autowired
-    TaskService taskService;
+    private TaskService taskService;
 
     @GetMapping()
     public ResponseEntity<List<Task>> getAll() {
-        System.out.println("get all");
         List<Task> tasks = taskService.findAll();
         return new ResponseEntity<>(tasks, HttpStatus.OK);
-
     }
 
     @GetMapping("/search")
     public ResponseEntity<List<Task>> getTodoByContent(@RequestParam String keyword) {
-        System.out.println("get by content");
         List<Task> taskData = taskService.findByContentContaining(keyword);
         return new ResponseEntity<>(taskData, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Task>> getTodoById(@PathVariable int id) {
-        System.out.println("get by id");
         Optional<Task> todoData = taskService.findById(id);
         if (!todoData.isEmpty()) {
             return new ResponseEntity<>(todoData, HttpStatus.OK);
@@ -60,14 +56,6 @@ public class TaskController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Task> put(@PathVariable int id, @RequestBody Task task) throws NotFoundException {
-        Optional<Task> todoData = taskService.findById(id);
-        if (todoData.isPresent()) {
-            Task _task = todoData.get();
-            _task.setContent(task.getContent());
-            _task.setStatus(task.getStatus());
-            return new ResponseEntity<>(taskService.save(_task), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(taskService.update(id,task), HttpStatus.OK);
     }
 }

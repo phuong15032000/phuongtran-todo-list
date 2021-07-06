@@ -3,7 +3,9 @@ package com.trandiepphuong.todolist;
 import com.trandiepphuong.models.Task;
 import com.trandiepphuong.repositories.TaskRepository;
 import com.trandiepphuong.services.TaskServiceImpl;
+import javassist.NotFoundException;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -51,6 +53,20 @@ public class TaskServiceTest {
     void addTask() {
         when(taskRepository.save(any())).thenReturn(t1);
         taskService.save(t1);
+    }
+
+    @Test
+    void updateTask() throws NotFoundException {
+        Task newTask = new Task(1, "Eat dinner", "Not yet");
+        when(taskRepository.save(any())).thenReturn(newTask);
+        when(taskRepository.findById(1)).thenReturn(Optional.ofNullable(t1));
+        Task afterUpdate = taskService.update(newTask.getId(), newTask);
+        assertEquals(afterUpdate, newTask);
+
+        Task newTask2 = new Task(1000, "Eat dinner", "Not yet");
+        NotFoundException thrown = assertThrows(
+                NotFoundException.class, () -> taskService.update(newTask2.getId(), newTask2), "Not found exception");
+        assertTrue(thrown.getMessage().contains("Not found exception"));
     }
 
     @Test
